@@ -20,6 +20,11 @@ def create_sha256_hash_string(input_sttring):
     return sha256.hexdigest()
 
 
+def create_sha512_hash_string(input_string):
+    sha512 = hashlib.sha512()
+    sha512.update(input_string.encode('utf-8'))
+    return sha512.hexdigest()
+
 def unhash_md5_string(pathToWordlist, hashedstring):
     # Чтение списка слов из файла
     with open(pathToWordlist, 'r') as file:
@@ -44,6 +49,14 @@ def unhash_sha256_string(pathToWordlist, hashedstring):
             print(Fore.GREEN + f"Найдено совпадение: {word}" + Style.RESET_ALL)
 
 
+def unhash_sha512_string(pathToWordlist, hashedstring):
+    with open(pathToWordlist, 'r') as file:
+        wordlist = file.read().splitlines()
+    for word in wordlist:
+        if hashlib.sha512(word.encode()).hexdigest() == hashedstring:
+            print(Fore.GREEN + f"Найдено совпадение: {word}" + Style.RESET_ALL)
+
+
 input_string = "Hello, World!"
 hash_string = create_md5_hash_string(input_string)
 print(Fore.CYAN + "md5 hash " + hash_string+ Style.RESET_ALL)
@@ -58,3 +71,8 @@ sha256_string =  "Hello, World!"
 encoded_sha256 = create_sha256_hash_string(sha256_string)
 print(Fore.CYAN + "Sha256 hash: " + encoded_sha256+ Style.RESET_ALL)
 unhash_sha256_string("wordlist.txt", encoded_sha256)
+
+sha512_string = "python"
+encoded_sha512 = create_sha512_hash_string(sha512_string)
+print(Fore.CYAN + "Sha512 hash: " + encoded_sha512+ Style.RESET_ALL)
+unhash_sha512_string("wordlist.txt", encoded_sha512)
