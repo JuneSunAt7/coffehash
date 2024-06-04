@@ -57,22 +57,31 @@ def unhash_sha512_string(pathToWordlist, hashedstring):
             print(Fore.GREEN + f"Найдено совпадение: {word}" + Style.RESET_ALL)
 
 
-input_string = "Hello, World!"
-hash_string = create_md5_hash_string(input_string)
-print(Fore.CYAN + "md5 hash " + hash_string+ Style.RESET_ALL)
-unhash_md5_string("wordlist.txt", hash_string)
+import sys
 
-string_to_encode = "Hello, World!"
-encoded_string = create_sha1_hash_string(string_to_encode)
-print(Fore.CYAN +"Sha1 hash:", encoded_string+ Style.RESET_ALL)
-unhash_sha1_string("wordlist.txt", encoded_string)
 
-sha256_string =  "Hello, World!"
-encoded_sha256 = create_sha256_hash_string(sha256_string)
-print(Fore.CYAN + "Sha256 hash: " + encoded_sha256+ Style.RESET_ALL)
-unhash_sha256_string("wordlist.txt", encoded_sha256)
+def main(algorithm, hash, wordlist):
+   if algorithm == "md5":
+        unhash_md5_string(wordlist, hash)
+   elif algorithm == "sha1":
+       unhash_sha1_string(wordlist, hash)
+   elif algorithm == "sha256":
+       unhash_sha256_string(wordlist, hash)
+   elif algorithm == "sha512":
+       unhash_sha512_string(wordlist, hash)
+   else:
+       print(Fore.RED + "Unable algorithm"+ Style.RESET_ALL)
 
-sha512_string = "python"
-encoded_sha512 = create_sha512_hash_string(sha512_string)
-print(Fore.CYAN + "Sha512 hash: " + encoded_sha512+ Style.RESET_ALL)
-unhash_sha512_string("wordlist.txt", encoded_sha512)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+        print(Fore.MAGENTA + "Usage: python main.py 'algorithm' 'hash' 'wordlist'")
+        sys.exit(1)
+
+    alg = sys.argv[1]
+    hash = sys.argv[2]
+    wlist = sys.argv[3]
+
+    main(alg, hash, wlist)
+
+
